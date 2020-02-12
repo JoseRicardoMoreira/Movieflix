@@ -1,6 +1,9 @@
 const state = {
   topRated: [],
-  currentPage: 1
+  currentPage: 1,
+  totalResults: 0,
+  totalPages: 0,
+  isLoading: true
 };
 
 const mutations = {
@@ -14,6 +17,17 @@ const mutations = {
       };
     });
     console.log(state.topRated);
+  },
+  INCREMENT_CURRENT_PAGE(state){
+    state.currentPage++;
+    state.isLoading = true;
+  },
+  DECREMENT_CURRENT_PAGE(state){
+    state.currentPage--;
+    state.isLoading = true;
+  },
+  LOADING_OFF(state){
+    state.isLoading = false;
   }
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Movieflix</a>
+      <router-link class="navbar-brand" to="/">Movieflix</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -16,15 +16,9 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Popular</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Top rated</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Upcoming</a>
-          </li>
+          <router-link to="/popular" activeClass="active" class="nav-item"><a class="nav-link">Popular</a></router-link>
+          <router-link to="/top_rated" activeClass="active" class="nav-item"><a class="nav-link">Top rated</a></router-link>
+          <router-link to="/upcoming" activeClass="active" class="nav-item"><a class="nav-link">Upcoming</a></router-link>
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input

@@ -16,28 +16,40 @@ export default {
 };
 
 function fetchPopularMovies(currentPage, store) {
-  axios
-    .get(POPULAR_URL + currentPage)
-    .then(res => {
-      store.dispatch("fetchPopularMovies", res.data);
-    })
-    .catch(error => console.log(error));
+  setTimeout(
+    () => {console.log('Loading...')
+      axios
+      .get(POPULAR_URL + currentPage)
+      .then(res => {
+        store.dispatch("fetchPopularMovies", res.data);
+        store.dispatch('setPopularLoadingOff');
+      })
+      .catch(error => console.log(error));
+
+  }, 2000);
+  
 }
 
 function fetchTopRatedMovies(currentPage, store) {
-  axios
+  setTimeout(() => {
+    axios
     .get(TOP_RATED_URL + currentPage)
     .then(res => {
       store.dispatch("fetchTopRatedMovies", res.data);
+      store.dispatch('setPopularLoadingOff');
     })
     .catch(error => console.log(error));
+  }, 2000);
 }
 
 function fetchUpcomingMovies(currentPage, store) {
-  axios
+  setTimeout(() => {
+    axios
     .get(UPCOMING_URL + currentPage)
     .then(res => {
       store.dispatch("fetchUpcomingMovies", res.data);
+      store.dispatch('setPopularLoadingOff');
     })
     .catch(error => console.log(error));
+  }, 2000);
 }

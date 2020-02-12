@@ -1,4 +1,4 @@
-# vue-cli
+# movieflix
 
 > A Vue.js project
 
