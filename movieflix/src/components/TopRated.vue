@@ -30,46 +30,51 @@
       </div>
     </div>
     <div v-else>
-      <div class="row">
-        <app-simple-movie
-          v-for="movie in topRated"
-          v-bind:key="movie.id"
-          :title="movie.title"
-          :poster_path="movie.poster_path"
-          :release_date="movie.release_date"
-        ></app-simple-movie>
-      </div>
-      <div align="center">
-        <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-          <div v-if="topRatedCurrentPage === 1">
-            <button
-              type="button"
-              class="btn-margin btn btn-danger rounded-pill"
-              @click="fetchTopRatedNextPage"
-            >
-              Page&nbsp;
-              <strong>2</strong>
-            </button>
-          </div>
-          <div v-else>
-            <button
-              type="button"
-              class="btn-margin btn btn-danger rounded-pill"
-              @click="fetchTopRatedPreviousPage"
-            >
-              Page&nbsp;
-              <strong>{{ topRatedCurrentPage-1 }}</strong>
-            </button>
-            <button
-              type="button"
-              class="btn-margin btn btn-danger rounded-pill"
-              @click="fetchTopRatedNextPage"
-            >
-              Page&nbsp;
-              <strong>{{ topRatedCurrentPage+1 }}</strong>
-            </button>
+      <div v-if="topRated.length > 0">
+        <div class="row">
+          <app-simple-movie
+            v-for="movie in topRated"
+            v-bind:key="movie.id"
+            :title="movie.title"
+            :poster_path="movie.poster_path"
+            :release_date="movie.release_date"
+          ></app-simple-movie>
+        </div>
+        <div align="center">
+          <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+            <div v-if="topRatedCurrentPage === 1">
+              <button
+                type="button"
+                class="btn-margin btn btn-danger rounded-pill"
+                @click="fetchTopRatedNextPage"
+              >
+                Page&nbsp;
+                <strong>2</strong>
+              </button>
+            </div>
+            <div v-else>
+              <button
+                type="button"
+                class="btn-margin btn btn-danger rounded-pill"
+                @click="fetchTopRatedPreviousPage"
+              >
+                Page&nbsp;
+                <strong>{{ topRatedCurrentPage-1 }}</strong>
+              </button>
+              <button
+                type="button"
+                class="btn-margin btn btn-danger rounded-pill"
+                @click="fetchTopRatedNextPage"
+              >
+                Page&nbsp;
+                <strong>{{ topRatedCurrentPage+1 }}</strong>
+              </button>
+            </div>
           </div>
         </div>
+      </div>
+      <div v-else class="centered">
+        <h3>Oops! Apparently there are no movies...</h3>
       </div>
     </div>
   </div>
