@@ -21,15 +21,15 @@ const mutations = {
     });
     console.log(state.populars);
   },
-  INCREMENT_CURRENT_PAGE(state){
+  INCREMENT_POPULAR_CURRENT_PAGE(state) {
     state.currentPage++;
     state.isLoading = true;
   },
-  DECREMENT_CURRENT_PAGE(state){
+  DECREMENT_POPULAR_CURRENT_PAGE(state) {
     state.currentPage--;
     state.isLoading = true;
   },
-  LOADING_OFF(state){
+  LOADING_OFF(state) {
     state.isLoading = false;
   }
 };
@@ -38,14 +38,14 @@ const actions = {
   fetchPopularMovies({ commit }, movies) {
     commit("FETCH_POPULAR", movies);
   },
-  incrementCurrentPage({ commit }){
-    commit('INCREMENT_CURRENT_PAGE');
+  incrementPopularCurrentPage({ commit }) {
+    commit("INCREMENT_POPULAR_CURRENT_PAGE");
   },
-  decrementCurrentPage({ commit }){
-    commit('DECREMENT_CURRENT_PAGE');
+  decrementPopularCurrentPage({ commit }) {
+    commit("DECREMENT_POPULAR_CURRENT_PAGE");
   },
-  setPopularLoadingOff({commit}){
-    commit('LOADING_OFF');
+  setPopularLoadingOff({ commit }) {
+    commit("LOADING_OFF");
   }
 };
 
@@ -59,7 +59,7 @@ const getters = {
   popularTotalPages: state => {
     return state.totalPages;
   },
-  isLoading: state => {
+  popularIsLoading: state => {
     return state.isLoading;
   }
 };

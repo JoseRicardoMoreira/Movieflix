@@ -39,34 +39,98 @@
           :release_date="movie.release_date"
         ></app-simple-movie>
       </div>
-      <app-pagination></app-pagination>
+      <div align="center">
+        <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+          <div v-if="popularCurrentPage === 1">
+            <button
+              type="button"
+              class="btn-margin btn btn-danger rounded-pill"
+              @click="fetchPopularsNextPage"
+            >
+              Page&nbsp;
+              <strong>2</strong>
+            </button>
+          </div>
+          <div v-else>
+            <button
+              type="button"
+              class="btn-margin btn btn-danger rounded-pill"
+              @click="fetchPopularsPreviousPage"
+            >
+              Page&nbsp;
+              <strong>{{ popularCurrentPage-1 }}</strong>
+            </button>
+            <button
+              type="button"
+              class="btn-margin btn btn-danger rounded-pill"
+              @click="fetchPopularsNextPage"
+            >
+              Page&nbsp;
+              <strong>{{ popularCurrentPage+1 }}</strong>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import SimpleMovie from "./SimpleMovie.vue";
-import Pagination from './Pagination.vue';
 import tmdbService from "../services/tmdbService.js";
 
 export default {
   components: {
-    appSimpleMovie: SimpleMovie,
-    appPagination: Pagination
+    appSimpleMovie: SimpleMovie
   },
   created() {
-    tmdbService.fetchPopularMovies(
-      this.$store.getters.popularCurrentPage,
-      this.$store
-    );
+    tmdbService.fetchPopularMovies(this.popularCurrentPage, this.$store);
+  },
+  methods: {
+    fetchPopularsNextPage() {
+      this.$store.dispatch("incrementPopularCurrentPage");
+
+      tmdbService.fetchPopularMovies(this.popularCurrentPage, this.$store);
+    },
+    fetchPopularsPreviousPage() {
+      this.$store.dispatch("decrementPopularCurrentPage");
+
+      tmdbService.fetchPopularMovies(this.popularCurrentPage, this.$store);
+    }
   },
   computed: {
     populars() {
       return this.$store.getters.populars;
     },
-    isLoading(){
-      return this.$store.getters.isLoading;
+    popularCurrentPage() {
+      return this.$store.getters.popularCurrentPage;
+    },
+    popularTotalPages() {
+      return this.$store.getters.popularTotalPages;
+    },
+    isLoading() {
+      return this.$store.getters.popularIsLoading;
     }
   }
 };
 </script>
+
+<style scoped>
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.btn-margin {
+  margin: 10px;
+}
+
+.btn:hover {
+  background-color: white;
+  color: black;
+  border-color: red;
+}
+</style>

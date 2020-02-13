@@ -1,10 +1,16 @@
 const state = {
   upcoming: [],
-  currentPage: 1
+  currentPage: 1,
+  totalResults: 0,
+  totalPages: 0,
+  isLoading: true
 };
 
 const mutations = {
   FETCH_UPCOMING(state, movies) {
+    state.totalResults = movies.total_results;
+    state.totalPages = movies.total_pages;
+
     state.upcoming = movies.results.map(movie => {
       return {
         id: movie.id,
@@ -14,12 +20,32 @@ const mutations = {
       };
     });
     console.log(state.upcoming);
+  },
+  INCREMENT_UPCOMING_CURRENT_PAGE(state) {
+    state.currentPage++;
+    state.isLoading = true;
+  },
+  DECREMENT_UPCOMING_CURRENT_PAGE(state) {
+    state.currentPage--;
+    state.isLoading = true;
+  },
+  LOADING_OFF(state) {
+    state.isLoading = false;
   }
 };
 
 const actions = {
   fetchUpcomingMovies({ commit }, movies) {
     commit("FETCH_UPCOMING", movies);
+  },
+  incrementUpcomingCurrentPage({ commit }) {
+    commit("INCREMENT_UPCOMING_CURRENT_PAGE");
+  },
+  decrementUpcomingCurrentPage({ commit }) {
+    commit("DECREMENT_UPCOMING_CURRENT_PAGE");
+  },
+  setUpcomingLoadingOff({ commit }) {
+    commit("LOADING_OFF");
   }
 };
 
@@ -29,6 +55,12 @@ const getters = {
   },
   upcomingCurrentPage: state => {
     return state.currentPage;
+  },
+  upcomingTotalPages: state => {
+    return state.totalPages;
+  },
+  upcomingIsLoading: state => {
+    return state.isLoading;
   }
 };
 

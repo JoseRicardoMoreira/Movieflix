@@ -8,6 +8,9 @@ const state = {
 
 const mutations = {
   FETCH_TOP_RATED(state, movies) {
+    state.totalResults = movies.total_results;
+    state.totalPages = movies.total_pages;
+
     state.topRated = movies.results.map(movie => {
       return {
         id: movie.id,
@@ -18,15 +21,15 @@ const mutations = {
     });
     console.log(state.topRated);
   },
-  INCREMENT_CURRENT_PAGE(state){
+  INCREMENT_TOP_RATED_CURRENT_PAGE(state) {
     state.currentPage++;
     state.isLoading = true;
   },
-  DECREMENT_CURRENT_PAGE(state){
+  DECREMENT_TOP_RATED_CURRENT_PAGE(state) {
     state.currentPage--;
     state.isLoading = true;
   },
-  LOADING_OFF(state){
+  LOADING_OFF(state) {
     state.isLoading = false;
   }
 };
@@ -34,6 +37,15 @@ const mutations = {
 const actions = {
   fetchTopRatedMovies({ commit }, movies) {
     commit("FETCH_TOP_RATED", movies);
+  },
+  incrementTopRatedCurrentPage({ commit }) {
+    commit("INCREMENT_TOP_RATED_CURRENT_PAGE");
+  },
+  decrementTopRatedCurrentPage({ commit }) {
+    commit("DECREMENT_TOP_RATED_CURRENT_PAGE");
+  },
+  setTopRatedLoadingOff({ commit }) {
+    commit("LOADING_OFF");
   }
 };
 
@@ -43,6 +55,12 @@ const getters = {
   },
   topRatedCurrentPage: state => {
     return state.currentPage;
+  },
+  topRatedTotalPages: state => {
+    return state.totalPages;
+  },
+  topRatedIsLoading: state => {
+    return state.isLoading;
   }
 };
 
