@@ -9,6 +9,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ title }}</h5>
         <p class="card-text">{{ release_date }}</p>
+        <router-link :to="'/movie/' + id" tag="button" class="btn btn-danger btn-sm">Details</router-link>
       </div>
     </div>
   </div>
@@ -16,12 +17,11 @@
 
 <script>
 export default {
-  props: ["title", "poster_path", "release_date"]
+  props: ["id", "title", "poster_path", "release_date"]
 };
 </script>
 
 <style scoped>
-
 .movie {
   margin: 10px;
   padding: 5px;
@@ -38,8 +38,5 @@ export default {
 .card:hover {
   transform: scale(1.12);
   z-index: 10;
-  background-color: crimson;
-  color: white;
 }
-
 </style>

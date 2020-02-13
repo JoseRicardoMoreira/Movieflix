@@ -35,6 +35,7 @@
           <app-simple-movie
             v-for="movie in upcoming"
             v-bind:key="movie.id"
+            :id="movie.id"
             :title="movie.title"
             :poster_path="movie.poster_path"
             :release_date="movie.release_date"
