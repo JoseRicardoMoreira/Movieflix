@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <img
-          :src="'http://image.tmdb.org/t/p/w185_and_h278_bestv2/' + movie.poster_path"
+          :src="'http://image.tmdb.org/t/p/w500/' + movie.poster_path"
           class="movie-img rounded"
           alt="#"
         />
@@ -12,6 +12,8 @@
         <h1>{{movie.title}}</h1>
         <h3>{{ movie.tagline}}</h3>
         <hr />
+        <br>
+        <h5>LANGUAGES</h5>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li
@@ -38,52 +40,68 @@
         <h5>THE SYNOPSIS</h5>
         <br />
         <p>{{movie.overview}}</p>
-        <br />
-        <hr />
-        <br />
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-          <div class="carousel-inner">
-            <div
-              v-for="(actor, index) in cast"
-              v-bind:key="actor.cast_id"
-              :class="index === 0 ? 'carousel-item active' : 'carousel-item'"
-              align="center"
-            >
-              <img
-                :src="'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + actor.profile_path"
-                class="d-block w-100 circle"
-                alt="#"
-              />
-            </div>
-          </div>
-          <a
-            class="carousel-control-prev"
-            href="#carouselExampleControls"
-            role="button"
-            data-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a
-            class="carousel-control-next"
-            href="#carouselExampleControls"
-            role="button"
-            data-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
+        <hr>
+        <br>
       </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <div align="center">
+      <h5>CAST</h5>
+      <hr>
+      <br>
+      <div v-if="isLoading" class="centered" align="center">
+        <div class="spinner-grow text-danger" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-danger" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-danger" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-danger" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-light" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div v-else>
+        <carousel-3d :disable3d="true" :space="365" :clickable="false" :controls-visible="true" :height="520" :width="320">
+          <slide v-for="(actor, index) in cast" :key="actor.cast_id" :index="index" >
+            <div class="cast card rounded" style="width: 20rem;">
+              <img :src="actor.profile_path == null ? 'https://drogariaguarulhos.com.br/media/catalog/product/placeholder/default/notfound.png': 'https://image.tmdb.org/t/p/h632' + actor.profile_path" alt="#" class="card-img-top rounded" style="height:450px;"/>
+              <div class="card-body">
+                <p class="card-text"><center>{{ actor.name }}</center></p>
+              </div>
+            </div>
+          </slide>
+        </carousel-3d>
+      </div>
+    </div>
+    <br>
   </div>
 </template>
 
 <script>
+import { Carousel3d, Slide } from 'vue-carousel-3d';
 import tmdbService from "../services/tmdbService.js";
 
 export default {
+  components: {
+    Carousel3d, Slide
+  },
   created() {
     tmdbService.fetchMovieDetails(this.movie_id, this.$store);
     tmdbService.fetchMovieCredits(this.movie_id, this.$store);
@@ -97,15 +115,19 @@ export default {
     },
     cast() {
       return this.$store.getters.cast;
+    },
+    isLoading(){
+      return this.$store.getters.castIsLoading;
     }
   }
 };
 </script>
 
 <style scoped>
-.carousel-inner {
-  width: 75px;
-  height: 200px;
+.cast {
+  padding: 5px;
+  width: 100%;
+  box-shadow: 5px 5px 20px white;
 }
 
 .row {
@@ -114,8 +136,8 @@ export default {
 .movie-img {
   margin: 10px;
   padding: 5px;
-  width: 300px;
-  height: 420px;
+  width: 450px;
+  height:720px;
   box-shadow: 5px 5px 20px white;
 }
 

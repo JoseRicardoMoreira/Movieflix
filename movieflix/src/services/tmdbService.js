@@ -12,7 +12,7 @@ const UPCOMING_URL =
 const MOVIE_DETAILS_URL_PART_1 = "https://api.themoviedb.org/3/movie/";
 
 const MOVIE_DETAILS_URL_PART_2 =
-  "?api_key=9d479c8041b4e0813af9f60efc678759&language=en-US";
+  "?api_key=9d479c8041b4e0813af9f60efc678759&language=en-US&append_to_response=videos";
 
 export default {
   fetchPopularMovies,
@@ -41,7 +41,7 @@ function fetchTopRatedMovies(currentPage, store) {
       .get(TOP_RATED_URL + currentPage)
       .then(res => {
         store.dispatch("fetchTopRatedMovies", res.data);
-        store.dispatch("setPopularLoadingOff");
+        store.dispatch("setTopRatedLoadingOff");
       })
       .catch(error => console.log(error));
   }, 2000);
@@ -53,7 +53,7 @@ function fetchUpcomingMovies(currentPage, store) {
       .get(UPCOMING_URL + currentPage)
       .then(res => {
         store.dispatch("fetchUpcomingMovies", res.data);
-        store.dispatch("setPopularLoadingOff");
+        store.dispatch("setUpcomingLoadingOff");
       })
       .catch(error => console.log(error));
   }, 2000);
@@ -64,7 +64,6 @@ function fetchMovieDetails(movie_id, store) {
     axios
       .get(MOVIE_DETAILS_URL_PART_1 + movie_id + MOVIE_DETAILS_URL_PART_2)
       .then(res => {
-        console.log(res.data);
         store.dispatch("setMovie", res.data);
       })
       .catch(error => console.log(error));
@@ -81,8 +80,8 @@ function fetchMovieCredits(movie_id, store) {
           MOVIE_DETAILS_URL_PART_2
       )
       .then(res => {
-        console.log(res.data.cast);
         store.dispatch("setCast", res.data.cast);
+        store.dispatch("setCastIsLoadingOff");
       })
       .catch(error => console.log(error));
   }, 2000);

@@ -1,7 +1,8 @@
 <template>
   <div>
     <br />
-    <h3 align="center">Popular movies</h3>
+    <h3 align="center">POPULAR</h3>
+    <h4 align="center">MOVIES</h4>
     <hr />
     <div v-if="isLoading" class="centered" align="center">
       <div class="spinner-grow text-danger" role="status">
@@ -30,8 +31,7 @@
       </div>
     </div>
     <div v-else>
-      <div v-if="populars.length > 0">
-        <div class="row">
+      <div class="row" style="margin: 35px;">
           <app-simple-movie
             v-for="movie in populars"
             v-bind:key="movie.id"
@@ -46,7 +46,7 @@
             <div v-if="popularCurrentPage === 1">
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchPopularsNextPage"
               >
                 Page&nbsp;
@@ -56,7 +56,7 @@
             <div v-else>
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchPopularsPreviousPage"
               >
                 Page&nbsp;
@@ -64,7 +64,7 @@
               </button>
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchPopularsNextPage"
               >
                 Page&nbsp;
@@ -73,48 +73,58 @@
             </div>
           </div>
         </div>
-      </div>
-      <div v-else class="centered">
-        <h3>Oops! Apparently there are no movies...</h3>
-      </div>
     </div>
+
+    <back-to-top bottom="50px" right="50px">
+      <button type="button" class="btn btn-danger btn-to-top"><i class="fa fa-chevron-up"></i></button>
+    </back-to-top>
   </div>
 </template>
 
 <script>
 import SimpleMovie from "./SimpleMovie.vue";
 import tmdbService from "../services/tmdbService.js";
+import BackToTop from 'vue-backtotop';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    appSimpleMovie: SimpleMovie
+    appSimpleMovie: SimpleMovie,
+    BackToTop
   },
   created() {
     tmdbService.fetchPopularMovies(this.popularCurrentPage, this.$store);
+    this.$store.dispatch('setUpcomingLoadingOn');
+    this.$store.dispatch('setTopRatedLoadingOn');
+    this.$store.dispatch('setCastIsLoadingOn');
   },
   methods: {
     fetchPopularsNextPage() {
       this.$store.dispatch("incrementPopularCurrentPage");
 
       tmdbService.fetchPopularMovies(this.popularCurrentPage, this.$store);
+
+      $('html,body').stop().animate({
+        scrollTop: 0
+      }, 'slow', 'swing');
     },
     fetchPopularsPreviousPage() {
       this.$store.dispatch("decrementPopularCurrentPage");
 
       tmdbService.fetchPopularMovies(this.popularCurrentPage, this.$store);
+
+      $('html,body').stop().animate({
+        scrollTop: 0
+      }, 'slow', 'swing');
     }
   },
   computed: {
-    populars() {
-      return this.$store.getters.populars;
-    },
-    popularCurrentPage() {
-      return this.$store.getters.popularCurrentPage;
-    },
-    popularTotalPages() {
-      return this.$store.getters.popularTotalPages;
-    },
-    isLoading() {
+    ...mapGetters([
+      'populars',
+      'popularCurrentPage',
+      'popularTotalPages'
+    ]),
+    isLoading(){
       return this.$store.getters.popularIsLoading;
     }
   }
@@ -134,9 +144,12 @@ export default {
   margin: 10px;
 }
 
-.btn:hover {
-  background-color: white;
-  color: black;
-  border-color: red;
+.btn-to-top {
+  height: 70px;
+  width: 70px;
+  padding: 10px 16px;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 22px;
 }
 </style>

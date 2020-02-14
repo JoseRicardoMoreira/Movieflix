@@ -1,6 +1,7 @@
 const state = {
   movie: {},
-  cast: []
+  cast: [],
+  isLoading: true
 };
 
 const mutations = {
@@ -10,6 +11,12 @@ const mutations = {
   SET_CAST(state, cast) {
     state.cast = cast;
     console.log(state.cast);
+  },
+  SET_IS_LOADING_OFF(state){
+    state.isLoading = false;
+  },
+  SET_IS_LOADING_ON(state){
+    state.isLoading = true;
   }
 };
 
@@ -19,6 +26,12 @@ const actions = {
   },
   setCast({ commit }, cast) {
     commit("SET_CAST", cast);
+  },
+  setCastIsLoadingOff({commit}){
+    commit("SET_IS_LOADING_OFF")
+  },
+  setCastIsLoadingOn({commit}){
+    commit("SET_IS_LOADING_ON")
   }
 };
 
@@ -28,6 +41,9 @@ const getters = {
   },
   cast: state => {
     return state.cast;
+  },
+  castIsLoading: state => {
+    return state.isLoading;
   }
 };
 

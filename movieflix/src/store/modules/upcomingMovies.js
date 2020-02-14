@@ -31,6 +31,9 @@ const mutations = {
   },
   LOADING_OFF(state) {
     state.isLoading = false;
+  },
+  LOADING_ON(state) {
+    state.isLoading = true;
   }
 };
 
@@ -46,6 +49,9 @@ const actions = {
   },
   setUpcomingLoadingOff({ commit }) {
     commit("LOADING_OFF");
+  },
+  setUpcomingLoadingOn({ commit }) {
+    commit("LOADING_ON");
   }
 };
 

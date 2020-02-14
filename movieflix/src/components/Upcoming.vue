@@ -30,8 +30,7 @@
       </div>
     </div>
     <div v-else>
-      <div v-if="upcoming.length > 0">
-        <div class="row">
+      <div class="row" style="margin: 35px;">
           <app-simple-movie
             v-for="movie in upcoming"
             v-bind:key="movie.id"
@@ -46,7 +45,7 @@
             <div v-if="upcomingCurrentPage === 1">
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchUpcomingNextPage"
               >
                 Page&nbsp;
@@ -56,7 +55,7 @@
             <div v-else>
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchUpcomingPreviousPage"
               >
                 Page&nbsp;
@@ -64,7 +63,7 @@
               </button>
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchUpcomingNextPage"
               >
                 Page&nbsp;
@@ -73,24 +72,29 @@
             </div>
           </div>
         </div>
-      </div>
-      <div v-else class="centered">
-        <h3>Oops! Apparently there are no movies...</h3>
-      </div>
     </div>
+    <back-to-top bottom="50px" right="50px">
+      <button type="button" class="btn btn-danger btn-to-top"><i class="fa fa-chevron-up"></i></button>
+    </back-to-top>
   </div>
 </template>
 
 <script>
 import SimpleMovie from "./SimpleMovie.vue";
 import tmdbService from "../services/tmdbService.js";
+import BackToTop from 'vue-backtotop';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    appSimpleMovie: SimpleMovie
+    appSimpleMovie: SimpleMovie,
+    BackToTop
   },
   created() {
     tmdbService.fetchUpcomingMovies(this.upcomingCurrentPage, this.$store);
+    this.$store.dispatch('setPopularLoadingOn');
+    this.$store.dispatch('setTopRatedLoadingOn');
+    this.$store.dispatch('setCastIsLoadingOn');
   },
   methods: {
     fetchUpcomingNextPage() {
@@ -105,16 +109,12 @@ export default {
     }
   },
   computed: {
-    upcoming() {
-      return this.$store.getters.upcoming;
-    },
-    upcomingCurrentPage() {
-      return this.$store.getters.upcomingCurrentPage;
-    },
-    upcomingTotalPages() {
-      return this.$store.getters.upcomingTotalPages;
-    },
-    isLoading() {
+    ...mapGetters([
+      'upcoming',
+      'upcomingCurrentPage',
+      'upcomingTotalPages'
+    ]),
+    isLoading(){
       return this.$store.getters.upcomingIsLoading;
     }
   }
@@ -134,9 +134,12 @@ export default {
   margin: 10px;
 }
 
-.btn:hover {
-  background-color: white;
-  color: black;
-  border-color: red;
+.btn-to-top {
+  height: 70px;
+  width: 70px;
+  padding: 10px 16px;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 22px;
 }
 </style>

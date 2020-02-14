@@ -1,7 +1,8 @@
 <template>
   <div>
     <br />
-    <h3 align="center">Top rated movies</h3>
+    <h3 align="center">TOP RATED</h3>
+    <h4 align="center">MOVIES</h4>
     <hr />
     <div v-if="isLoading" class="centered" align="center">
       <div class="spinner-grow text-danger" role="status">
@@ -30,8 +31,7 @@
       </div>
     </div>
     <div v-else>
-      <div v-if="topRated.length > 0">
-        <div class="row">
+      <div class="row" style="margin: 35px;">
           <app-simple-movie
             v-for="movie in topRated"
             v-bind:key="movie.id"
@@ -46,7 +46,7 @@
             <div v-if="topRatedCurrentPage === 1">
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchTopRatedNextPage"
               >
                 Page&nbsp;
@@ -56,7 +56,7 @@
             <div v-else>
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchTopRatedPreviousPage"
               >
                 Page&nbsp;
@@ -64,7 +64,7 @@
               </button>
               <button
                 type="button"
-                class="btn-margin btn btn-danger rounded-pill"
+                class="btn-margin btn btn-danger btn-lg rounded-pill"
                 @click="fetchTopRatedNextPage"
               >
                 Page&nbsp;
@@ -73,24 +73,29 @@
             </div>
           </div>
         </div>
-      </div>
-      <div v-else class="centered">
-        <h3>Oops! Apparently there are no movies...</h3>
-      </div>
     </div>
+    <back-to-top bottom="50px" right="50px">
+      <button type="button" class="btn btn-danger btn-to-top"><i class="fa fa-chevron-up"></i></button>
+    </back-to-top>
   </div>
 </template>
 
 <script>
 import SimpleMovie from "./SimpleMovie.vue";
 import tmdbService from "../services/tmdbService.js";
+import BackToTop from 'vue-backtotop';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    appSimpleMovie: SimpleMovie
+    appSimpleMovie: SimpleMovie,
+    BackToTop
   },
   created() {
     tmdbService.fetchTopRatedMovies(this.topRatedCurrentPage, this.$store);
+    this.$store.dispatch('setUpcomingLoadingOn');
+    this.$store.dispatch('setPopularLoadingOn');
+    this.$store.dispatch('setCastIsLoadingOn');
   },
   methods: {
     fetchTopRatedNextPage() {
@@ -105,16 +110,12 @@ export default {
     }
   },
   computed: {
-    topRated() {
-      return this.$store.getters.topRated;
-    },
-    topRatedCurrentPage() {
-      return this.$store.getters.topRatedCurrentPage;
-    },
-    topRatedTotalPages() {
-      return this.$store.getters.topRatedTotalPages;
-    },
-    isLoading() {
+    ...mapGetters([
+      'topRated',
+      'topRatedCurrentPage',
+      'topRatedTotalPages'
+    ]),
+    isLoading(){
       return this.$store.getters.topRatedIsLoading;
     }
   }
@@ -134,9 +135,12 @@ export default {
   margin: 10px;
 }
 
-.btn:hover {
-  background-color: white;
-  color: black;
-  border-color: red;
+.btn-to-top {
+  height: 70px;
+  width: 70px;
+  padding: 10px 16px;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 22px;
 }
 </style>
